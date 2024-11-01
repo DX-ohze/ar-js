@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>AR.js Camera Example</title>
-    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.min.js"></script>
     <style>
         body, html {
@@ -11,10 +11,7 @@
             padding: 0;
             overflow: hidden;
             height: 100%;
-            background-color: transparent; /* 背景色を透明にする */
-        }
-        .arjs-marker-controls {
-            display: none; /* マーカーコントロールの非表示 */
+            background-color: transparent;
         }
         #errorMessage {
             position: absolute;
@@ -23,61 +20,38 @@
             transform: translateX(-50%);
             color: red;
             font-size: 20px;
-            display: none; /* 初期状態では非表示 */
+            display: none;
         }
     </style>
 </head>
 <body>
     <div id="errorMessage">マーカーが見つかりません。カメラの前にマーカーを持ってきてください。</div>
-    <script>
-        // 元のconsole.logを保存
-        const originalConsoleLog = console.log;
 
-        // console.logをオーバーライド
-        console.log = function() {
-            const args = Array.from(arguments);
-            // 特定のメッセージをフィルタリング
-            if (!args[0].includes("trackingBackend") && !args[0].includes("Share on augmented-websites")) {
-                originalConsoleLog.apply(console, args);
-            }
-        };
-    </script>
-    <a-scene embedded arjs>
+    <a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: false;">
         <a-marker type="pattern" url="pattern.patt">
             <a-entity
                 id="modelEntity"
                 gltf-model="url(taian.gltf)"
                 scale="0.5 0.5 0.5"
                 position="0 0 0"
-                rotation="0 0 0"
-                visibility="hidden">
+                rotation="0 0 0">
             </a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
 
     <script>
-        // モデルが読み込まれたときのイベントリスナー
-        const modelEntity = document.getElementById('modelEntity');
-        modelEntity.addEventListener('model-loaded', () => {
-            console.log('Model loaded successfully');
-            modelEntity.setAttribute('visibility', 'visible');
-        });
-
-        // マーカーのエラーメッセージ表示用
         const errorMessage = document.getElementById('errorMessage');
-
-        // マーカーが認識されたときのイベントリスナー
         const marker = document.querySelector('a-marker');
+
         marker.addEventListener('markerFound', () => {
-            console.log('Marker found');
-            errorMessage.style.display = 'none'; // エラーメッセージを非表示
+            errorMessage.style.display = 'none';
         });
 
         marker.addEventListener('markerLost', () => {
-            console.log('Marker lost');
-            errorMessage.style.display = 'block'; // エラーメッセージを表示
+            errorMessage.style.display = 'block';
         });
     </script>
 </body>
 </html>
+
