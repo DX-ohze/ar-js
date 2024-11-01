@@ -43,6 +43,15 @@
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
+
+
+    <script>
+        const modelEntity = document.getElementById('modelEntity');
+        modelEntity.addEventListener('model-loaded', () => {
+                console.log('Model loaded successfully');
+                modelEntity.setAttribute('visibility', 'visible');
+  });
+</script>
 </body>
 </html>
 
