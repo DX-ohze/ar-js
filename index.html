@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AR.js Camera Example with Advanced Debugging</title>
+    <title>AR.js with Rectangle Model</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.min.js"></script>
     <style>
@@ -29,13 +29,16 @@
 
     <a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: true;">
         <a-marker type="pattern" url="pattern.patt">
-            <a-entity
-                id="modelEntity"
-                gltf-model="url(box.gltf)"
-                scale="0.5 0.5 0.5"
-                position="0 0 0"
-                rotation="0 0 0">
-            </a-entity>
+            <!-- 長方形を表現するボックスを追加 -->
+            <a-box 
+                id="rectangleModel"
+                position="0 0.5 0" <!-- マーカーの上に少し持ち上げて配置 -->
+                rotation="0 0 0" 
+                width="1"       <!-- 幅 -->
+                height="0.5"    <!-- 高さ -->
+                depth="0.2"     <!-- 奥行き -->
+                color="#4CC3D0"> <!-- 色 -->
+            </a-box>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
@@ -44,54 +47,17 @@
         const errorMessage = document.getElementById('errorMessage');
         const marker = document.querySelector('a-marker');
 
-        if (marker) {
-            // マーカーが存在する場合、デバッグメッセージを追加
-            console.log('Marker element found:', marker);
-
-            marker.addEventListener('markerFound', () => {
-                console.log('Marker found');
-                errorMessage.style.display = 'none';
-            });
-
-            marker.addEventListener('markerLost', () => {
-                console.log('Marker lost');
-                errorMessage.style.display = 'block';
-            });
-        } else {
-            console.error('Marker element not found');
-        }
-
-        // a-sceneがロードされたときの確認
-        const scene = document.querySelector('a-scene');
-        scene.addEventListener('loaded', () => {
-            console.log('AR.js scene loaded');
+        marker.addEventListener('markerFound', () => {
+            errorMessage.style.display = 'none';
         });
 
-        // モデルのロード確認
-        const modelEntity = document.getElementById('modelEntity');
-        modelEntity.addEventListener('model-loaded', () => {
-            console.log('3D model loaded successfully');
+        marker.addEventListener('markerLost', () => {
+            errorMessage.style.display = 'block';
         });
-
-        // カメラが有効か確認
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(stream => {
-                console.log('Camera access granted');
-            })
-            .catch(error => {
-                console.error('Camera access denied:', error);
-                errorMessage.textContent = 'カメラへのアクセスが許可されていません。';
-                errorMessage.style.display = 'block';
-            });
-
-        // エラーハンドリング
-        window.onerror = function (msg, url, lineNo, columnNo, error) {
-            console.error(`Error: ${msg} at ${lineNo}:${columnNo}`);
-            return false;
-        };
     </script>
 </body>
 </html>
+
 
 
 
