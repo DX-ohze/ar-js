@@ -35,25 +35,38 @@
     <a-scene embedded arjs>
         <a-marker type="pattern" url="pattern-pattern.patt">
             <a-entity
+                id="modelEntity"
                 gltf-model="url(taian.gltf)"
-                scale="2.5 2.5 2.5"
+                scale="0.5 0.5 0.5"
                 position="0 0 0"
-                rotation="0 0 0">
+                rotation="0 0 0"
+                visibility="hidden">
             </a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
 
-
     <script>
+        // モデルが読み込まれたときのイベントリスナー
         const modelEntity = document.getElementById('modelEntity');
         modelEntity.addEventListener('model-loaded', () => {
-                console.log('Model loaded successfully');
-                modelEntity.setAttribute('visibility', 'visible');
-  });
-</script>
+            console.log('Model loaded successfully');
+            modelEntity.setAttribute('visibility', 'visible');
+        });
+
+        // マーカーが認識されたときのイベントリスナー
+        const marker = document.querySelector('a-marker');
+        marker.addEventListener('markerFound', () => {
+            console.log('Marker found');
+        });
+
+        marker.addEventListener('markerLost', () => {
+            console.log('Marker lost');
+        });
+    </script>
 </body>
 </html>
+
 
 
 
