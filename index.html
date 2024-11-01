@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>AR.js Camera Example</title>
+    <title>AR.js Camera Example with Debugging</title>
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.min.js"></script>
     <style>
@@ -27,12 +27,12 @@
 <body>
     <div id="errorMessage">マーカーが見つかりません。カメラの前にマーカーを持ってきてください。</div>
 
-    <a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: false;">
+    <a-scene embedded arjs="sourceType: webcam; detectionMode: mono; debugUIEnabled: true;">
         <a-marker type="pattern" url="pattern.patt">
             <a-entity
                 id="modelEntity"
                 gltf-model="url(taian.gltf)"
-                scale="0.2 0.2 0.2"
+                scale="0.5 0.5 0.5"
                 position="0 0 0"
                 rotation="0 0 0">
             </a-entity>
@@ -44,16 +44,39 @@
         const errorMessage = document.getElementById('errorMessage');
         const marker = document.querySelector('a-marker');
 
+        // マーカーが見つかったときのイベント
         marker.addEventListener('markerFound', () => {
+            console.log('Marker found');
             errorMessage.style.display = 'none';
         });
 
+        // マーカーが見失われたときのイベント
         marker.addEventListener('markerLost', () => {
+            console.log('Marker lost');
             errorMessage.style.display = 'block';
         });
+
+        // デバッグ用: a-sceneのロード確認
+        const scene = document.querySelector('a-scene');
+        scene.addEventListener('loaded', () => {
+            console.log('AR.js scene loaded');
+        });
+
+        // デバッグ用: モデルのロード状況確認
+        const modelEntity = document.getElementById('modelEntity');
+        modelEntity.addEventListener('model-loaded', () => {
+            console.log('3D model loaded successfully');
+        });
+
+        // デバッグ用: エラーハンドリング
+        window.onerror = function (msg, url, lineNo, columnNo, error) {
+            console.error(`Error: ${msg} at ${lineNo}:${columnNo}`);
+            return false;
+        };
     </script>
 </body>
 </html>
+
 
 
 
