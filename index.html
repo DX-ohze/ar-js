@@ -16,9 +16,19 @@
         .arjs-marker-controls {
             display: none; /* マーカーコントロールの非表示 */
         }
+        #errorMessage {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: red;
+            font-size: 20px;
+            display: none; /* 初期状態では非表示 */
+        }
     </style>
 </head>
 <body>
+    <div id="errorMessage">マーカーが見つかりません。カメラの前にマーカーを持ってきてください。</div>
     <script>
         // 元のconsole.logを保存
         const originalConsoleLog = console.log;
@@ -54,22 +64,20 @@
             modelEntity.setAttribute('visibility', 'visible');
         });
 
+        // マーカーのエラーメッセージ表示用
+        const errorMessage = document.getElementById('errorMessage');
+
         // マーカーが認識されたときのイベントリスナー
         const marker = document.querySelector('a-marker');
         marker.addEventListener('markerFound', () => {
             console.log('Marker found');
+            errorMessage.style.display = 'none'; // エラーメッセージを非表示
         });
 
         marker.addEventListener('markerLost', () => {
             console.log('Marker lost');
+            errorMessage.style.display = 'block'; // エラーメッセージを表示
         });
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
