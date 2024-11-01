@@ -13,9 +13,25 @@
         height: 100%;
         background-color: black;
       }
+      .arjs-marker-controls {
+        display: none; /* マーカーコントロールの非表示 */
+      }
     </style>
   </head>
   <body>
+    <script>
+      // 元のconsole.logを保存
+      const originalConsoleLog = console.log;
+
+      // console.logをオーバーライド
+      console.log = function() {
+        const args = Array.from(arguments);
+        // 特定のメッセージをフィルタリング
+        if (!args[0].includes("trackingBackend") && !args[0].includes("Share on augmented-websites")) {
+          originalConsoleLog.apply(console, args);
+        }
+      };
+    </script>
     <a-scene embedded arjs>
       <a-marker type="pattern" url="pattern.patt">
         <a-entity
@@ -29,6 +45,7 @@
     </a-scene>
   </body>
 </html>
+
 
 
 
