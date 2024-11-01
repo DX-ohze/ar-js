@@ -2,9 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
-    <title>AR.js Pattern Example</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/jeromeetienne/ar.js/1.7.2/aframe/build/aframe-ar.min.js"></script>
+    <title>AR.js Camera Example</title>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/AR-js-org/AR.js/3.3.2/aframe/build/aframe-ar.min.js"></script>
     <style>
       body, html {
         margin: 0;
@@ -16,9 +16,7 @@
     </style>
   </head>
   <body>
-    <!-- AR.jsのシーン設定 -->
     <a-scene embedded arjs>
-      <!-- パターンマーカーの設定 -->
       <a-marker type="pattern" url="pattern.patt">
         <a-entity
           gltf-model="url(taian.gltf)"
@@ -27,11 +25,10 @@
           rotation="0 0 0">
         </a-entity>
       </a-marker>
-      
-      <!-- カメラ設定 -->
       <a-entity camera></a-entity>
     </a-scene>
   </body>
 </html>
+
 
 
